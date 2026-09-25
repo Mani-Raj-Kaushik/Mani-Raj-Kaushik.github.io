@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mani Raj Kaushik — Full-Stack Java Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #eef1f5;
+    --paper-raised: #ffffff;
+    --ink: #10181f;
+    --ink-soft: #4a5560;
+    --line: #c9d1da;
+    --amber: #b9762c;
+    --teal: #1c6b63;
+    --amber-soft: #b9762c22;
+    --teal-soft: #1c6b6322;
+    --shadow: 0 1px 0 rgba(16,24,31,0.06);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0f1720;
+      --paper-raised: #16212b;
+      --ink: #eceff2;
+      --ink-soft: #9aa7b2;
+      --line: #2a3742;
+      --amber-soft: #e3a85733;
+      --teal-soft: #3fa79633;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1720;
+    --paper-raised: #16212b;
+    --ink: #eceff2;
+    --ink-soft: #9aa7b2;
+    --line: #2a3742;
+    --amber-soft: #e3a85733;
+    --teal-soft: #3fa79633;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; margin: 0; letter-spacing: -0.01em; }
+  a { color: inherit; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; }
+
+  /* ambient backdrop */
+  #bg-lines {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.5;
+  }
+  #bg-lines path { stroke: var(--line); stroke-width: 1; fill: none; }
+  .pulse-dot { animation: pulse 4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: .25; } 50% { opacity: .9; } }
+
+  header.hero {
+    position: relative; z-index: 1;
+    min-height: 92vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 0 60px;
+  }
+  .kicker {
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--teal);
+    display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+    opacity: 0; animation: rise .7s ease forwards .1s;
+  }
+  .kicker::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 2.2s ease-in-out infinite; }
+  h1.name {
+    font-size: clamp(42px, 7vw, 78px); font-weight: 600; line-height: 1.03;
+    opacity: 0; animation: rise .8s ease forwards .25s;
+  }
+  .role-line {
+    margin-top: 18px; font-size: clamp(18px, 2.6vw, 24px); color: var(--ink-soft);
+    font-family: "IBM Plex Mono", monospace; min-height: 32px;
+    opacity: 0; animation: rise .8s ease forwards .45s;
+  }
+  #role-typed::after { content: "|"; margin-left: 2px; animation: blink 1s step-end infinite; color: var(--amber); }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero-desc {
+    max-width: 560px; margin-top: 22px; color: var(--ink-soft); font-size: 16px;
+    opacity: 0; animation: rise .8s ease forwards .6s;
+  }
+  .hero-links { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; animation: rise .8s ease forwards .75s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+  .btn {
+    font-family: "IBM Plex Mono", monospace; font-size: 14px; padding: 11px 20px;
+    border-radius: 3px; text-decoration: none; border: 1px solid var(--line);
+    transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    display: inline-flex; align-items: center; gap: 8px; background: var(--paper-raised);
+  }
+  .btn:hover { transform: translateY(-2px); border-color: var(--amber); }
+  .btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn.primary:hover { border-color: var(--amber); background: var(--amber); color: #10181f; }
+
+  section { position: relative; z-index: 1; padding: 72px 0; border-top: 1px solid var(--line); }
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 34px; }
+  .section-head .tag { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--teal); }
+  .section-head h2 { font-size: clamp(26px, 3.4vw, 34px); font-weight: 600; }
+
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  .about p { max-width: 640px; font-size: 16.5px; color: var(--ink-soft); }
+  .about strong { color: var(--ink); font-weight: 500; }
+
+  .skill-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 22px 32px; }
+  .skill-group h3 { font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 500; color: var(--ink-soft); text-transform: none; margin-bottom: 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px; padding: 5px 11px;
+    border: 1px solid var(--line); border-radius: 3px; background: var(--paper-raised);
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .chip:hover { border-color: var(--amber); transform: translateY(-1px); }
+
+  .projects-list { display: flex; flex-direction: column; gap: 22px; }
+  .project {
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 6px;
+    padding: 28px 30px; transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .project:hover { border-color: var(--teal); transform: translateY(-3px); box-shadow: 0 10px 26px rgba(16,24,31,0.08); }
+  .project-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  .project h3 { font-size: 21px; font-weight: 600; }
+  .project .stack { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--teal); margin-top: 6px; }
+  .project dl { margin: 18px 0 0; display: grid; grid-template-columns: 64px 1fr; gap: 8px 14px; }
+  .project dt { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--amber); align-self: start; padding-top: 2px; }
+  .project dd { margin: 0; font-size: 15px; color: var(--ink-soft); }
+
+  .timeline-item { display: grid; grid-template-columns: 130px 1fr; gap: 18px; padding-bottom: 26px; }
+  .timeline-item .when { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--ink-soft); padding-top: 3px; }
+  .timeline-item h3 { font-size: 18px; font-weight: 600; }
+  .timeline-item .role { color: var(--teal); font-size: 14px; margin: 4px 0 10px; }
+  .timeline-item ul { margin: 0; padding-left: 18px; color: var(--ink-soft); font-size: 15px; }
+  .timeline-item li { margin-bottom: 6px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .cert-list, .ach-list { list-style: none; margin: 0; padding: 0; }
+  .cert-list li, .ach-list li {
+    padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: 15px; color: var(--ink-soft);
+    display: flex; gap: 10px;
+  }
+  .cert-list li::before { content: "▸"; color: var(--amber); }
+  .ach-list li::before { content: "★"; color: var(--teal); }
+
+  footer.contact {
+    position: relative; z-index: 1; padding: 90px 0 60px; text-align: left;
+    border-top: 1px solid var(--line);
+  }
+  footer.contact h2 { font-size: clamp(30px, 5vw, 46px); max-width: 560px; }
+  .contact-links { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .foot-note { margin-top: 60px; font-size: 13px; color: var(--ink-soft); font-family: "IBM Plex Mono", monospace; }
+
+  @media (max-width: 640px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .timeline-item { grid-template-columns: 1fr; }
+    .project dl { grid-template-columns: 54px 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kicker, h1.name, .role-line, .hero-desc, .hero-links { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .pulse-dot, .kicker::before { animation: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<svg id="bg-lines" viewBox="0 0 900 1200" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,120 Q450,60 900,180" />
+  <path d="M0,340 Q450,420 900,320" />
+  <path d="M0,640 Q450,560 900,700" />
+  <circle class="pulse-dot" cx="120" cy="120" r="3" fill="#1c6b63" />
+  <circle class="pulse-dot" cx="800" cy="340" r="3" fill="#b9762c" style="animation-delay:1.2s" />
+  <circle class="pulse-dot" cx="200" cy="700" r="3" fill="#1c6b63" style="animation-delay:2.1s" />
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">AVAILABLE FOR FULL-STACK / SDE ROLES — BANGALORE, INDIA</div>
+    <h1 class="name">Mani Raj<br>Kaushik</h1>
+    <div class="role-line"><span id="role-typed"></span></div>
+    <p class="hero-desc">Computer Science graduate (CGPA 8.8/10) building full-stack systems with Java, Spring Boot, SQL, and REST APIs — with side projects spanning blockchain and generative AI. Java SE 17 certified.</p>
+    <div class="hero-links">
+      <a class="btn primary" href="https://github.com/Mani-Raj-Kaushik" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://linkedin.com/in/mani-rajkaushik-4a9aa4328" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="https://leetcode.com/u/ManiRajKaushik" target="_blank" rel="noopener">LeetCode ↗</a>
+      <a class="btn" href="mailto:manirajkaushik@gmail.com">Email me</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap reveal">
+    <div class="section-head"><span class="tag">01</span><h2>About</h2></div>
+    <div class="about">
+      <p>I'm a <strong>Full-Stack Java Developer</strong> who enjoys the whole path from a database schema to a working REST API to a UI that a real person clicks on. Most of my hands-on time lately has gone into <strong>Spring Boot, Spring Data JPA, and SQL/MySQL</strong>, backed by strong DSA fundamentals from daily practice on LeetCode. I've also shipped a blockchain DApp and a generative-AI tool, because I like learning by building rather than just reading about it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap reveal">
+    <div class="section-head"><span class="tag">02</span><h2>Skills</h2></div>
+    <div class="skill-groups">
+      <div class="skill-group"><h3>Full-Stack Development</h3><div class="chips">
+        <span class="chip">Spring Boot</span><span class="chip">Spring Data JPA</span><span class="chip">REST APIs</span><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">Servlets/JSP</span>
+      </div></div>
+      <div class="skill-group"><h3>Languages</h3><div class="chips">
+        <span class="chip">Java</span><span class="chip">SQL</span><span class="chip">JavaScript</span><span class="chip">Python</span><span class="chip">C++</span><span class="chip">C</span>
+      </div></div>
+      <div class="skill-group"><h3>Databases</h3><div class="chips">
+        <span class="chip">MySQL</span><span class="chip">RDBMS</span><span class="chip">DBMS</span><span class="chip">Query Optimization</span><span class="chip">Joins & Indexing</span>
+      </div></div>
+      <div class="skill-group"><h3>DSA & CS Core</h3><div class="chips">
+        <span class="chip">Data Structures</span><span class="chip">Algorithms</span><span class="chip">OOP</span><span class="chip">Operating Systems</span><span class="chip">Computer Networks</span>
+      </div></div>
+      <div class="skill-group"><h3>Blockchain</h3><div class="chips">
+        <span class="chip">Ethereum</span><span class="chip">Solidity</span><span class="chip">Smart Contracts</span><span class="chip">MetaMask</span>
+      </div></div>
+      <div class="skill-group"><h3>AI / ML & Tools</h3><div class="chips">
+        <span class="chip">Generative AI</span><span class="chip">NLP</span><span class="chip">Git</span><span class="chip">Postman</span><span class="chip">Agile/Jira</span>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap reveal">
+    <div class="section-head"><span class="tag">03</span><h2>Projects</h2></div>
+    <div class="projects-list">
+
+      <div class="project">
+        <div class="project-top">
+          <div>
+            <h3>Library Management System</h3>
+            <div class="stack">Java · Spring Boot · Spring Data JPA · REST APIs · MySQL</div>
+          </div>
+          <a class="btn" href="https://github.com/Mani-Raj-Kaushik" target="_blank" rel="noopener">Code ↗</a>
+        </div>
+        <dl>
+          <dt>What</dt><dd>Full-stack library system with Spring Boot REST APIs and a MySQL backend managing book inventory, members, and issue/return transactions.</dd>
+          <dt>Why</dt><dd>Replaces manual, error-prone tracking with a rule-based system that enforces due dates, calculates overdue fines automatically, and shows real-time availability.</dd>
+          <dt>How</dt><dd>Modeled Book, Member, and Transaction entities with Spring Data JPA; exposed CRUD/search endpoints tested via Postman; applied OOP/SOLID design with HashMap/ArrayList for O(1) average-case lookups.</dd>
+        </dl>
+      </div>
+
+      <div class="project">
+        <div class="project-top">
+          <div>
+            <h3>Decentralized Medical Supply Chain Tracker</h3>
+            <div class="stack">Ethereum · Solidity · Smart Contracts · MetaMask · JavaScript</div>
+          </div>
+          <a class="btn" href="https://github.com/Mani-Raj-Kaushik" target="_blank" rel="noopener">Code ↗</a>
+        </div>
+        <dl>
+          <dt>What</dt><dd>A DApp on Ethereum that tracks medical supply chain records from origin to delivery.</dd>
+          <dt>Why</dt><dd>Removes single points of failure inherent in centralized databases and makes every record cryptographically verifiable.</dd>
+          <dt>How</dt><dd>Authored immutable Smart Contracts in Solidity; integrated MetaMask for wallet-based auth and transaction signing; applied OOP patterns in JavaScript for a modular frontend.</dd>
+        </dl>
+      </div>
+
+      <div class="project">
+        <div class="project-top">
+          <div>
+            <h3>AI-Powered YouTube Video Summariser</h3>
+            <div class="stack">Python · YouTube Data API · Generative AI · NLP</div>
+          </div>
+          <a class="btn" href="https://github.com/Mani-Raj-Kaushik" target="_blank" rel="noopener">Code ↗</a>
+        </div>
+        <dl>
+          <dt>What</dt><dd>An NLP pipeline that fetches transcripts via the YouTube Data API and generates structured, chapter-wise summaries.</dd>
+          <dt>Why</dt><dd>Helps viewers digest long-form video content quickly without watching in full.</dd>
+          <dt>How</dt><dd>Used text chunking and prompt engineering with a generative AI model to handle variable-length transcripts within context limits while preserving accuracy.</dd>
+        </dl>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap reveal">
+    <div class="section-head"><span class="tag">04</span><h2>Experience</h2></div>
+    <div class="timeline-item">
+      <div class="when">2025<br>3 months</div>
+      <div>
+        <h3>Vision Astraa EV Academy</h3>
+        <div class="role">Full Stack Web Development Intern · Bangalore, India</div>
+        <ul>
+          <li>Engineered responsive web features with HTML5, CSS3, and JavaScript inside Agile sprint cycles, resolving UI bugs across releases.</li>
+          <li>Integrated RESTful APIs into the frontend for real-time data rendering, decoupling client logic from backend services.</li>
+          <li>Managed the codebase via Git/GitHub, conducting peer code reviews across the full SDLC.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="more">
+  <div class="wrap reveal">
+    <div class="section-head"><span class="tag">05</span><h2>Education & More</h2></div>
+    <div class="grid-2">
+      <div>
+        <h3 style="font-size:17px;margin-bottom:10px;">Education</h3>
+        <p style="color:var(--ink-soft);font-size:15px;margin:0 0 4px;"><strong style="color:var(--ink);">Acharya Institute of Technology</strong>, Bangalore</p>
+        <p style="color:var(--ink-soft);font-size:14px;margin:0 0 20px;">B.E. Computer Science & Engineering · CGPA 8.8/10 · Aug 2022 – May 2026</p>
+        <h3 style="font-size:17px;margin-bottom:10px;">Certifications</h3>
+        <ul class="cert-list">
+          <li>Java SE 17 Developer (1Z0-829) Cert Prep</li>
+          <li>Agile with Atlassian Jira</li>
+          <li>DSA: Basics of Data Structures & Algorithms</li>
+          <li>Machine Learning Introduction — Coursera</li>
+          <li>AI For Everyone & GenAI for Everyone — DeepLearning.AI</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:17px;margin-bottom:10px;">Achievements</h3>
+        <ul class="ach-list">
+          <li>Top 50 — IBW Hackathon 2025, Cardano Blockchain Track (300+ teams)</li>
+          <li>Active competitive programmer on LeetCode</li>
+          <li>Open-source contributor on GitHub</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="contact">
+  <div class="wrap reveal">
+    <h2>Let's build something. Reach out.</h2>
+    <div class="contact-links">
+      <a class="btn primary" href="mailto:manirajkaushik@gmail.com">manirajkaushik@gmail.com</a>
+      <a class="btn" href="tel:+917856056637">+91-78560-56637</a>
+      <a class="btn" href="https://github.com/Mani-Raj-Kaushik" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://linkedin.com/in/mani-rajkaushik-4a9aa4328" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="foot-note">Built by Mani Raj Kaushik — Bangalore, India</div>
+  </div>
+</footer>
+
+<script>
+  // typing role rotator
+  const roles = ["Full-Stack Java Developer", "Spring Boot · REST APIs", "SQL & Database Design", "DSA + Problem Solving"];
+  const el = document.getElementById('role-typed');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    el.textContent = roles[0];
+  } else {
+    let ri = 0, ci = 0, deleting = false;
+    function tick() {
+      const word = roles[ri];
+      el.textContent = deleting ? word.slice(0, ci--) : word.slice(0, ci++);
+      let delay = deleting ? 35 : 55;
+      if (!deleting && ci === word.length + 1) { delay = 1400; deleting = true; }
+      else if (deleting && ci === 0) { deleting = false; ri = (ri + 1) % roles.length; delay = 300; }
+      setTimeout(tick, delay);
+    }
+    tick();
+  }
+
+  // scroll reveal
+  const items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    items.forEach(i => io.observe(i));
+  } else {
+    items.forEach(i => i.classList.add('in'));
+  }
+</script>
+</body>
+</html>
